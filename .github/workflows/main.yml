@@ -1,0 +1,24 @@
+name: DeCharge Runner
+
+on:
+  workflow_dispatch: # Supaya bisa klik "Run" manual dari GitHub
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          npm install
+          npx playwright install chromium
+      - name: Start Bot
+        env:
+          TELE_TOKEN: ${{ secrets.TELE_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          PROXY_USER: ${{ secrets.PROXY_USER }}
+          PROXY_PASS: ${{ secrets.PROXY_PASS }}
+        run: node bot.js
